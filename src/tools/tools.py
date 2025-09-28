@@ -1,7 +1,8 @@
 from smolagents import tool
+from sqlalchemy import text, engine
 # Improved SQL Engine Tool with validation
 @tool
-def sql_engine(query: str) -> str:
+def sql_engine(query: str, engine: engine) -> str:
     """
     Executes SQL queries on the database with schema validation.
     Returns a string representation of the result.
@@ -103,7 +104,7 @@ def sql_engine(query: str) -> str:
 
 # # Enhanced SQL to DataFrame Tool for the analyst
 @tool
-def sql_to_dataframe(query: str) -> str:
+def sql_to_dataframe(query: str, engine) -> str:
     """
     Executes SQL query and converts results to pandas DataFrame for analysis.
     Returns JSON string containing DataFrame info and sample data.

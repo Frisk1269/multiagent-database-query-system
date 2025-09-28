@@ -14,6 +14,8 @@ from sqlalchemy import (
 )
 from sqlalchemy.sql import func
 from datetime import datetime
+
+
 class DatabaseManager:
     def __init__(self, connection_string: str):
         self.engine = create_engine(connection_string)
@@ -138,7 +140,7 @@ class DatabaseManager:
 
     def _load_schema(self):
                 
-        # Table definitions (keeping your existing schema)
+        # Table definitions
         business_category = Table(
             "business_category",
             self.metadata_obj,
