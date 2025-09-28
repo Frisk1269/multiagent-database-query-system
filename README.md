@@ -15,6 +15,7 @@ Docker Support: Containerized deployment with docker-compose
 Comprehensive Testing: Unit tests, integration tests, and performance benchmarks
 
 ## Architecture
+```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   Orchestrator  │    │ Business Intel   │    │ Data Analysis   │
 │     Agent       │◄──►│     Agent        │◄──►│     Agent       │
@@ -28,7 +29,7 @@ Comprehensive Testing: Unit tests, integration tests, and performance benchmarks
                     │   SQL Engine    │
                     │   & Database    │
                     └─────────────────┘
-
+```
 ## Quick Start
 ### Prerequisites
 
