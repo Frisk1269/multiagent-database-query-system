@@ -1,12 +1,13 @@
-from smolagents import InferenceClientModel
+from smolagents import TransformersModel, InferenceClientModel
 from sqlalchemy import create_engine
 from tools.tools import make_sql_engine, make_sql_to_dataframe
 
+MODEL = InferenceClientModel()
 def create_model_config(engine):
     model_config = {
         "orchestrator": {
             "name": "orchestrator_agent",
-            "model": InferenceClientModel(),
+            "model": MODEL,
             "description": (
                 "Orchestrator that manages the BI and Analysis agents. "
                 "Routes business questions through the proper workflow: "
@@ -20,7 +21,7 @@ def create_model_config(engine):
         },
         "analyst": {
             "name": "data_analysis_agent",
-            "model": InferenceClientModel(),
+            "model": MODEL,
             "description": (
                     "Data Analysis Agent that processes SQL results, creates DataFrames, "
                     "performs analysis, and generates visualizations and insights."
@@ -33,7 +34,7 @@ def create_model_config(engine):
         },
         "business_intelligence": {
             "name": "business_intelligence_agent",
-            "model": InferenceClientModel(),
+            "model": MODEL,
             "description": (
                     "Business Intelligence Agent that translates business questions into SQL queries. "
                     "This agent understands business terminology, maps it to database schema, "

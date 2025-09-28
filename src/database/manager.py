@@ -24,6 +24,9 @@ class DatabaseManager:
         self.sample_data = self._sample_data()
         self.insert_data_into_database()
     
+    def connect(self):
+        return self.engine.connect()
+    
     def _sample_data(self):
         return {
         # Sample data (keeping your existing data)
@@ -73,7 +76,7 @@ class DatabaseManager:
                 {"transaction_type_id": 1, "transaction_type_name": "purchase"},
                 {"transaction_type_id": 2, "transaction_type_name": "refund"},
                 {"transaction_type_id": 3, "transaction_type_name": "credit"},
-                {"transaction_type_id": 4, "transaction_type_name": "installment"},
+                {"transaction_type_id": 4, "transaction_type_name": "installments"},
                 {"transaction_type_id": 5, "transaction_type_name": "service"},
             ],
             'transactions_samples' : [
