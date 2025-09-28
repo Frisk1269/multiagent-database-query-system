@@ -1,20 +1,12 @@
-from smolagent import CodeAgent, InferenceClientModel, tool
-from database.manager import DatabaseManager
+from smolagents import CodeAgent
 class DataAnalysisAgent:
-    def __init__(self, db_manager: DatabaseManager, model_config: dict = None):
-        self.db_manager = db_manager
+    def __init__(self,  model_config: dict = None):
         self.agent = CodeAgent(
-            name="data_analysis_agent",
-            model=InferenceClientModel(),
-            description=(
-                "Data Analysis Agent that processes SQL results, creates DataFrames, "
-                "performs analysis, and generates visualizations and insights."
-            ),
+            name=model_config['name'],
+            model=model_config['model'],
+            description=model_config['description'],
             tools=(model_config["tools"] if model_config and "tools" in model_config else []),
-            additional_authorized_imports=[
-                "pandas", "pandas.*", "numpy", "numpy.*", "json", "plotly",
-                "plotly.express", "plotly.graph_objects", "datetime", "statistics"
-            ],
+            additional_authorized_imports=(model_config["authorized_imports"] if model_config and "authorized_imports" in model_config else []),
         )
 
         self.analysis_prompt = """
@@ -62,3 +54,6 @@ class DataAnalysisAgent:
         self.agent.prompt_templates["system_prompt"] = (
             self.agent.prompt_templates.get("system_prompt", "") + self.analysis_prompt
         )
+
+    def execute(self, query: str):
+        return self.agent.run(query)

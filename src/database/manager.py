@@ -22,6 +22,7 @@ class DatabaseManager:
         self.metadata_obj = MetaData()
         self.schema = self._load_schema()
         self.sample_data = self._sample_data()
+        self.insert_data_into_database()
     
     def _sample_data(self):
         return {
@@ -230,6 +231,11 @@ class DatabaseManager:
             actor.execute(insert(table), rows)
                 
     def insert_data_into_database(self):
+        inspector = inspect(self.engine)
+        for table in self.schema.values():
+            if inspector.has_table(table.name):
+                with self.engine.begin() as conn:
+                    conn.execute(table.delete())  # clear before insert
         # Insert all data
         sample_data = {
             self.schema['business_category']: self.sample_data['business_category_samples'],
@@ -263,3 +269,8 @@ class DatabaseManager:
                     print(df)
         except Exception as e:
             print(f"Error displaying {table_name} table: {e}")
+
+    def run_query(self, query: str):
+        with self.engine.connect() as conn:
+            result = conn.execute(text(query))
+            return result.fetchall()

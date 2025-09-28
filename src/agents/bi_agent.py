@@ -1,20 +1,16 @@
-from database.manager import DatabaseManager
-from smolagent import CodeAgent, InferenceClientModel, tool
-# Business Intelligence Agent (replaces planning agent with better focus)
 
+from smolagents import CodeAgent
+
+
+# Business Intelligence Agent (replaces planning agent with better focus)
 class BusinessIntelligenceAgent:
-    def __init__(self, db_manager:DatabaseManager, model_config: dict):
-        self.db_manager = db_manager
+    def __init__(self, model_config: dict):
         self.agent = CodeAgent(
-            name="business_intelligence_agent",
-            model=InferenceClientModel(),
-            description=(
-                "Business Intelligence Agent that translates business questions into SQL queries. "
-                "This agent understands business terminology, maps it to database schema, "
-                "and generates appropriate SQL queries with business context."
-            ),
+            name=model_config['name'],
+            model=model_config['model'],
+            description=model_config["description"],
             tools=(model_config["tools"] if model_config and "tools" in model_config else []),
-            additional_authorized_imports=["datetime", "json", "sqlalchemy"],
+            additional_authorized_imports=(model_config["authorized_imports"] if model_config and "authorized_imports" in model_config else []),
         )
         self.bi_prompt = """
         You are a Business Intelligence SQL Agent. Your role is to convert natural language business questions into accurate, efficient SQL using only the provided schema.
@@ -49,3 +45,6 @@ class BusinessIntelligenceAgent:
         """
 
         self.agent.prompt_templates['system_prompt'] += self.bi_prompt
+        
+    def execute(self, query: str):
+        return self.agent.run(query)

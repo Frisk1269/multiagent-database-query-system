@@ -1,21 +1,15 @@
-from database.manager import DatabaseManager
-from smolagent import CodeAgent, InferenceClientModel
-from bi_agent import BusinessIntelligenceAgent
-from data_analyst_agent import DataAnalysisAgent
+from smolagents import CodeAgent
+from agents.bi_agent import BusinessIntelligenceAgent
+from agents.data_analyst_agent import DataAnalysisAgent
 class OrchestratorAgent:
-    def __init__(self, db_manager: DatabaseManager, bi_agent: BusinessIntelligenceAgent, analysis_agent: DataAnalysisAgent):
-        self.db_manager = db_manager
+    def __init__(self, bi_agent: BusinessIntelligenceAgent, analysis_agent: DataAnalysisAgent, model_config:dict):
         self.agent = CodeAgent(
-            name="orchestrator_agent",
-            model=InferenceClientModel(),
-            description=(
-                "Orchestrator that manages the BI and Analysis agents. "
-                "Routes business questions through the proper workflow: "
-                "Business question -> SQL generation -> Data analysis -> Insights & recommendations"
-            ),
-            tools=[],
-            managed_agents=[bi_agent.agent, analysis_agent.agent],
-            additional_authorized_imports=["json", "time"],
+            name=model_config['name'],
+            model=model_config['model'],
+            description=model_config['description'],
+            tools=(model_config["tools"] if model_config and "tools" in model_config else []),
+            additional_authorized_imports=(model_config["authorized_imports"] if model_config and "authorized_imports" in model_config else []),
+            managed_agents=[bi_agent.agent, analysis_agent.agent]
         )
 
         orchestrator_prompt = """
@@ -60,3 +54,6 @@ class OrchestratorAgent:
         """
 
         self.agent.prompt_templates['system_prompt'] += orchestrator_prompt
+
+    def execute(self, query: str):
+        return self.agent.run(query)
