@@ -1,5 +1,10 @@
 # NL2SQL Multi-Agent System
-A production-ready system that converts natural language questions into SQL queries using a multi-agent architecture built with the smolagents framework.
+Trying to build a production-ready system that converts natural language questions into SQL queries using a multi-agent architecture built with the smolagents framework.
+TO-DO:
+1. Data Warehouse connection from gold layer
+2. Reporting Agent to summarize findings for executives
+3. Visualization Agent for making relevant visualization 
+
 ![alt text](https://github.com/jonuts100/multiagent-database-query-system/blob/main/img1.png?raw=True) 
 ![alt text](https://github.com/jonuts100/multiagent-database-query-system/blob/main/img2.png?raw=True)
 ![alt text](https://github.com/jonuts100/multiagent-database-query-system/blob/main/img3.png?raw=True)
