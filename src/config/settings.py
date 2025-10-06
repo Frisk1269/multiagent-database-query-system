@@ -1,9 +1,9 @@
-from smolagents import TransformersModel, InferenceClientModel
-from sqlalchemy import create_engine
+from smolagents import InferenceClientModel
 from tools.tools import make_sql_engine, make_sql_to_dataframe
+from database.connect import SQLConnector
 
 MODEL = InferenceClientModel()
-def create_model_config(engine):
+def create_model_config(engine, table_schemas):
     model_config = {
         "orchestrator": {
             "name": "orchestrator_agent",
@@ -14,7 +14,7 @@ def create_model_config(engine):
                 "Business question -> SQL generation -> Data analysis -> Insights & recommendations"
             ),
             "tools": [
-                make_sql_engine(engine),
+                make_sql_engine(engine, table_schemas),
                 make_sql_to_dataframe(engine)
             ],
             "authorized_imports": ["json", "time"],
@@ -40,8 +40,25 @@ def create_model_config(engine):
                     "This agent understands business terminology, maps it to database schema, "
                     "and generates appropriate SQL queries with business context."
                 ),
-            "tools": [make_sql_engine(engine)],
+            "tools": [make_sql_engine(engine, table_schemas)],
             "authorized_imports": ["datetime", "json", "sqlalchemy"]
         }
     }
     return model_config
+
+def create_db_config(engine: SQLConnector):
+    
+    table_info = engine.db_info # note: already a string
+    table_schema_info = engine.get_table_schema()
+    db_config = {
+        "tables": table_info,
+        "table_schemas": table_schema_info, 
+    }
+    return db_config
+    
+    
+from database.connect import DatabaseConfig
+if __name__ == '__main__':
+    db_config = DatabaseConfig()
+    engine = SQLConnector(db_config, auth_type='Windows')
+    print(create_db_config())

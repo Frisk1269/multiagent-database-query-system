@@ -1,76 +1,21 @@
 from smolagents import tool
 from sqlalchemy import text
 # Improved SQL Engine Tool with validation
-def make_sql_engine(engine):
+def make_sql_engine(engine, table_schemas):
   @tool
   def sql_engine(query: str) -> str:
-      """
+      f"""
       Executes SQL queries on the database with schema validation.
       Returns a string representation of the result.
 
       Here are the tables' descriptions:
 
-      transactions:
-        - transaction_id (INTEGER)          -- unique transaction record
-        - customer_id (INTEGER)             -- links to customers
-        - employee_id (INTEGER)             -- links to employees (who sold it)
-        - approver_id (INTEGER)             -- approving manager, if applicable
-        - product_id (INTEGER)              -- links to products
-        - transaction_type_id (INTEGER)     -- links to transaction_types
-        - total_amount (FLOAT)              -- full value of the transaction
-        - remaining_amount (FLOAT)          -- unpaid balance. If > 0, customer still owes money
-        - created_at (DATETIME)             -- when transaction was created
-        - due_at (DATETIME)                 -- payment due date
-
-      customers:
-        - customer_id (INTEGER)
-        - customer_name (VARCHAR)
-        - category_id (INTEGER)
-
-      employees:
-        - employee_id (INTEGER)
-        - employee_name (VARCHAR)
-        - job_desk_id (INTEGER)
-        - department_id (INTEGER)
-
-      transaction_types:
-        - transaction_type_id (INTEGER)
-        - transaction_type_name (VARCHAR)   -- fixed values: 'purchase', 'refund', 'credit', 'installments', 'service'
-
-      products:
-        - product_id (INTEGER)
-        - product_name (VARCHAR)
-        - price (FLOAT)
-        - stock (INTEGER)
-
-      departments:
-        - department_id (INTEGER)
-        - department_name (VARCHAR)
-        - department_size (INTEGER)
-
-      business_category:
-        - category_id (INTEGER)
-        - category_name (VARCHAR)
-
-      job_desk:
-        - job_desk_id (INTEGER)
-        - job_desk_name (VARCHAR)
-
-      DEFINITIONS / BUSINESS LOGIC:
-      - **Overdue payment**: A transaction is overdue if:
-        1. `remaining_amount > 0` (customer still owes money)
-        2. `due_at < CURRENT_DATE` (the due date has already passed)
-      - **Relevant transaction types**: Only `credit` and `installments` transactions can become overdue.
-        Purchases are usually fully paid, refunds reduce balances, and services may not have installments.
-      - **Amount still owed**: Taken from `transactions.remaining_amount`.
-      - **Who sold it**: The `employee_id` in `transactions` joins to `employees.employee_name`.
-      - **Days overdue**: Use `julianday('now') - julianday(transactions.due_at)` in SQLite.
+      {table_schemas}
 
       IMPORTANT:
-      - There are NO tables named 'payments', 'installments', 'credit_transactions', or 'salesreps'.
-      - Use `customers.customer_name`, not `CustomerName`.
-      - Use `employees.employee_name`, not `SalesRepName`.
-      - Use SQLite date functions (`julianday`, `datetime`, etc.).
+      - Use only tables given to do the task
+      - Use only columns available in the each table
+      - You can derive new columns from available columns
 
       Args:
           query: The query to perform. This should be correct SQL.

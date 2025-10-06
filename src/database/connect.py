@@ -49,9 +49,9 @@ class SQLConnector:
         self.LINK = db_config.get_connection_string(auth_type=auth_type)
         
         self.engine=None
-        self.db_info=""
-        self.db_schemas = {}
         self._connect_to_db()
+        self.db_info=self._get_database_info()
+        self.db_schemas = self._get_table_schema()
     
     def _connect_to_db(self):
         try:
@@ -123,7 +123,7 @@ class SQLConnector:
             print(f"Query execution failed: {e}")
             raise
 
-    def get_database_info(self, schema: str='gold') -> str:
+    def _get_database_info(self, schema: str='gold') -> str:
         """
         Retrieve and display all tables in the specified schema
         
@@ -152,45 +152,46 @@ class SQLConnector:
                 print(f"  • {table_info}")
             
             self.db_info = '\n'.join(info_parts)
-            return self.db_info
+            #return self.db_info
         except Exception as e:
             print("FAILED TO: Retrieve database information.")
         
-    def get_table_schema(self, table_name: str, schema: str ='gold', use_cache:bool = True):
+    def _get_table_schema(self, schema: str ='gold', use_cache:bool = True, table_name: str=None):
         """
-        Get column information for a specific table
+        Get column information for all table
         
         Args:
             table_name: Name of the table
             schema: Schema name (default: 'gold')
         """
-        table_key = f'{schema}.{table_name}'
-        if use_cache and self.db_schemas and table_key:
-            print(f"Using cached schema for {table_key}")
-            res = self.db_schemas[table_key]
-        else:
-            query = """
-            SELECT COLUMN_NAME,
-                DATA_TYPE,
-                IS_NULLABLE,
-                CHARACTER_MAXIMUM_LENGTH
-            FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE TABLE_SCHEMA = :schema
-            AND TABLE_NAME = :table_name
-            """ 
-            res = self.fetch(query, {"schema": schema, "table_name": table_name})
-            # print(f"Table schema for {schema}.{table_name}")
-            # caching
-            self.db_schemas[table_key] = res
+        tables = self.db_info.split('\n')
+        for table_name in tables:
+            table_key = f'{schema}.{table_name}'
+            if use_cache and self.db_schemas and table_key:
+                print(f"Using cached schema for {table_key}")
+                res = self.db_schemas[table_key]
+            else:
+                query = """
+                SELECT COLUMN_NAME,
+                    DATA_TYPE,
+                    IS_NULLABLE,
+                    CHARACTER_MAXIMUM_LENGTH
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_SCHEMA = :schema
+                AND TABLE_NAME = :table_name
+                """ 
+                res = self.fetch(query, {"schema": schema, "table_name": table_name})
+                # print(f"Table schema for {schema}.{table_name}")
+                # caching
+                self.db_schemas[table_key] = res
             
-            
-        # Display formatted output
-        print(f"\nSchema for {table_key}:")
-        print("-" * 80)
-        
-        for row in res:
-            print(row)
-        return res
+                    
+                # Display formatted output
+                print(f"\nSchema for {table_key}:")
+                print("-" * 80)
+                
+                for row in res:
+                    print(row)
         
     def close(self):
         if self.engine:
@@ -203,9 +204,9 @@ class SQLConnector:
 if __name__ == "__main__":
     config = DatabaseConfig()
     connector = SQLConnector(config, auth_type="Windows")
-    # rows = connector.fetch("SELECT TOP 5 * FROM gold.fact_sales")
-    # for row in rows:
-    #     print(row)
-    print(connector.get_database_info())
-    print()
-    print(type(connector.get_table_schema(table_name='dim_products')))
+    rows = connector.fetch("SELECT TOP 5 * FROM gold.fact_sales")
+    for row in rows:
+        print(row)
+    # print(connector._get_database_info())
+    # print()
+    # print(type(connector._get_table_schema(table_name='dim_products')))

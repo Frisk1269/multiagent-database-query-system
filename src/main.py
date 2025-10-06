@@ -3,6 +3,7 @@ from agents.data_analyst_agent import DataAnalysisAgent
 from agents.orchestrator_agent import OrchestratorAgent
 from config.settings import create_model_config
 from database.manager import DatabaseManager
+from database.connect import DatabaseConfig, SQLConnector
 import os
 from dotenv import load_dotenv
 from huggingface_hub import login
@@ -11,8 +12,14 @@ load_dotenv()
 hf_token = os.getenv("HUGGINGFACE_TOKEN")
 
 def main():
-    engine = DatabaseManager(connection_string="sqlite:///mydb.sqlite")
-    model_config = create_model_config(engine)
+    
+    # Using sample data
+    # engine = DatabaseManager(connection_string="sqlite:///mydb.sqlite")
+    db_config = DatabaseConfig()
+    
+    engine = SQLConnector(db_config, auth_type='Windows')
+    tables_summary = engine.db_schemas
+    model_config = create_model_config(engine, table_schemas=tables_summary)
 
     query = input("Enter a query: ")
 
